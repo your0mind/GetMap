@@ -22,7 +22,7 @@ Then just install GetMap, and leave settings on default. You now have a FastDL w
 * sm_getmap (ADMFLAG_CHANGEMAP) - Admin command that will download a bz2 compressed map file from the gm_public_url ConVar and it will be saved in the directory that's specified in the gm_fastdl_path. Afterwards, it'll be decompressed to the game's respective maps folder.
 * If the location of the compress and decompressed files are the same (ie both in maps folder), the plugin will auto delete the compressed version. This is the ideal configuration for using a third party FastDL like Fastdl.me.
 
-## Directory Structure
+## Directory Structure (Only for people with their own FastDLs)
 
 * The directory structure is important in order to get the downloaded file and the decompressed file in the desired locations. The path (at the moment) is dependent on the dedicated server's game folder that has the SourceMod installation. This game folder is called cstrike for Counter-Strike: Source and csgo for Counter-Strike: Global Offensive. If the directory structure is setup with LinuxGSM, it'll look similar to this for cstrike: ~/serverfiles/cstrike/ and the fastdl: ~/public_html/fastdl/maps
   
