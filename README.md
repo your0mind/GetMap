@@ -17,7 +17,7 @@ Then just install GetMap, and leave settings on default. You now have a FastDL w
 * gm_replace_map (Default = 0, Min = 0, Max = 1) - Whether or not to replace the map if it exists already in either the fastdl or maps folder.
 * gm_map_prefix (Default = "") - Prefix to add before mapname in commmand, if set to "bhop_" then the command /getmap stref_amazon will request the map "bhop_stref_amazon".
 
-## Admin Command ../../public_html/fastdl/maps
+## Admin Command
 
 * sm_getmap (ADMFLAG_CHANGEMAP) - Admin command that will download a bz2 compressed map file from the gm_public_url ConVar and it will be saved in the directory that's specified in the gm_fastdl_path. Afterwards, it'll be decompressed to the game's respective maps folder.
 * If the location of the compress and decompressed files are the same (ie both in maps folder), the plugin will auto delete the compressed version. This is the ideal configuration for using a third party FastDL like Fastdl.me.
