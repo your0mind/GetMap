@@ -22,10 +22,10 @@ HTTPClient gHC_HttpClient = null;
 public Plugin myinfo =
 {
 	name = "GetMap",
-	author = "BoomShot",
+	author = "BoomShot / Nimmy",
 	description = "Allows a user with !map privileges to download a map while in-game.",
-	version = "1.0.1",
-	url = "https://github.com/BoomShotKapow/GetMap"
+	version = "1.2.0",
+	url = "https://github.com/Nimmy2222/GetMap"
 }
 
 public void OnPluginStart()
@@ -36,11 +36,11 @@ public void OnPluginStart()
 
 	gCV_PublicURL = new Convar("gm_public_url", "https://main.fastdl.me/maps/", "Replace with a public FastDL URL containing maps for your respective game, the default one is for (cstrike).");
 	gCV_MapsPath = new Convar("gm_maps_path", "maps/", "Path to where the decompressed map file will go to. If blank, it'll be the game's folder (cstrike, csgo, tf, etc.)");
-	gCV_FastDLPath = new Convar("gm_fastdl_path", "maps/compressed", "Path to where the compressed map file will go to. If blank, it'll be the game's folder (cstrike, csgo, tf, etc.)");
+	gCV_FastDLPath = new Convar("gm_fastdl_path", "maps/", "Path to where the compressed map file will go to. If blank, it'll be the game's folder (cstrike, csgo, tf, etc.)");
 	gCV_ReplaceMap = new Convar("gm_replace_map", "0", "Specifies whether or not to replace the map if it already exists.", _, true, 0.0, true, 1.0);
 	gCV_MapPrefix = new Convar("gm_map_prefix", "", "Use map prefix before every map name when using the command, for example using a prefix of \"bhop_\", sm_getmap arcane, would search for bhop_arcane");
 
-	Convar.AutoExecConfig();
+	AutoExecConfig();
 }
 
 public Action Command_GetMap(int client, int args)
@@ -196,5 +196,15 @@ void OnDecompressFile(BZ_Error iError, char[] inFile, char[] outFile, DataPack d
 		return;
 	}
 
-	PrintToChatAll("Map successfully added to the server! Use !map %s to change to it.", mapName);
+	if(StrContains(gS_MapPath, gS_FastDLPath))
+	{
+		PrintToChat(client, "GetMap: Compressed and Decompressed file in same location, deleting compressed file. Ignore if using third party FastDL.");
+		if(FileExists(gS_FastDLPath))
+		{
+			DeleteFile(gS_FastDLPath);
+			PrintToChat(client, "GetMap: Deleted %s", gS_FastDLPath);
+		}
+	}
+
+	PrintToChat(client, "Map successfully added to the server! Use !map %s to change to it.", mapName);
 }
