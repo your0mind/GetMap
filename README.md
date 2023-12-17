@@ -1,6 +1,8 @@
 # GetMap
 SourceMod plugin that allows users to download a map while in-game and it will automatically setup the FastDL.
 
+[Click here support](https://discord.gg/j9nfnjcUVd)
+
 # Easy Server Setups
 
 In cstrike/cfg/server.cfg
