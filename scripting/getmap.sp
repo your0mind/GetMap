@@ -34,9 +34,9 @@ public void OnPluginStart()
 	RegAdminCmd("sm_download", Command_GetMap, ADMFLAG_CHANGEMAP, "Download a bz2 compressed map file to use in the server");
 	RegAdminCmd("sm_downloadmap", Command_GetMap, ADMFLAG_CHANGEMAP, "Download a bz2 compressed map file to use in the server");
 
-	gCV_PublicURL = new Convar("gm_public_url", "http://sojourner.me/fastdl/maps/", "Replace with a public FastDL URL containing maps for your respective game, the default one is for (cstrike).");
+	gCV_PublicURL = new Convar("gm_public_url", "https://main.fastdl.me/maps/", "Replace with a public FastDL URL containing maps for your respective game, the default one is for (cstrike).");
 	gCV_MapsPath = new Convar("gm_maps_path", "maps/", "Path to where the decompressed map file will go to. If blank, it'll be the game's folder (cstrike, csgo, tf, etc.)");
-	gCV_FastDLPath = new Convar("gm_fastdl_path", "maps/", "Path to where the compressed map file will go to. If blank, it'll be the game's folder (cstrike, csgo, tf, etc.)");
+	gCV_FastDLPath = new Convar("gm_fastdl_path", "maps/compressed", "Path to where the compressed map file will go to. If blank, it'll be the game's folder (cstrike, csgo, tf, etc.)");
 	gCV_ReplaceMap = new Convar("gm_replace_map", "0", "Specifies whether or not to replace the map if it already exists.", _, true, 0.0, true, 1.0);
 	gCV_MapPrefix = new Convar("gm_map_prefix", "", "Use map prefix before every map name when using the command, for example using a prefix of \"bhop_\", sm_getmap arcane, would search for bhop_arcane");
 
@@ -157,11 +157,10 @@ void OnMapFileDownloaded(HTTPStatus status, DataPack data)
 
 	char mapName[PLATFORM_MAX_PATH];
 	data.ReadString(mapName, sizeof(mapName));
-
 	if(status != HTTPStatus_OK)
 	{
 		LogError("GetMap: Failed to download %s: HTTPStatus (%d)", mapName, status);
-		ReplyToCommand(client, "Failed to download %s: HTTPStatus (%d)", mapName, status);
+		PrintToChat(client, "Failed to download %s: HTTPStatus (%d)", mapName, status);
 
 		if(FileExists(gS_FastDLPath))
 		{
@@ -173,7 +172,7 @@ void OnMapFileDownloaded(HTTPStatus status, DataPack data)
 		return;
 	}
 
-	ReplyToCommand(client, "Decompressing map file, please wait...");
+	PrintToChat(client, "Decompressing map file, please wait...");
 
 	BZ2_DecompressFile(gS_FastDLPath, gS_MapPath, OnDecompressFile, data);
 }
@@ -192,10 +191,10 @@ void OnDecompressFile(BZ_Error iError, char[] inFile, char[] outFile, DataPack d
 	if(iError != BZ_OK)
 	{
 		LogError("GetMap: Failed to decompress %s: BZ_Error (%d)", inFile, iError);
-		ReplyToCommand(client, "Failed to decompress %s: BZ_Error (%d)", inFile, iError);
+		PrintToChat(client, "Failed to decompress %s: BZ_Error (%d)", inFile, iError);
 
 		return;
 	}
 
-	ReplyToCommand(client, "Map successfully added to the server! Use !map %s to change to it.", mapName);
+	PrintToChatAll("Map successfully added to the server! Use !map %s to change to it.", mapName);
 }
