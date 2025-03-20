@@ -160,7 +160,7 @@ void OnMapFileDownloaded(HTTPStatus status, DataPack data)
 	if(status != HTTPStatus_OK)
 	{
 		LogError("GetMap: Failed to download %s: HTTPStatus (%d)", mapName, status);
-		PrintToChat(client, "Failed to download %s: HTTPStatus (%d)", mapName, status);
+		ReplyToCommand(client, "Failed to download %s: HTTPStatus (%d)", mapName, status);
 
 		if(FileExists(gS_FastDLPath))
 		{
@@ -172,7 +172,7 @@ void OnMapFileDownloaded(HTTPStatus status, DataPack data)
 		return;
 	}
 
-	PrintToChat(client, "Decompressing map file, please wait...");
+	ReplyToCommand(client, "Decompressing map file, please wait...");
 
 	BZ2_DecompressFile(gS_FastDLPath, gS_MapPath, OnDecompressFile, data);
 }
@@ -191,20 +191,20 @@ void OnDecompressFile(BZ_Error iError, char[] inFile, char[] outFile, DataPack d
 	if(iError != BZ_OK)
 	{
 		LogError("GetMap: Failed to decompress %s: BZ_Error (%d)", inFile, iError);
-		PrintToChat(client, "Failed to decompress %s: BZ_Error (%d)", inFile, iError);
+		ReplyToCommand(client, "Failed to decompress %s: BZ_Error (%d)", inFile, iError);
 
 		return;
 	}
 
 	if(StrContains(gS_MapPath, gS_FastDLPath))
 	{
-		PrintToChat(client, "GetMap: Compressed and Decompressed file in same location, deleting compressed file. Ignore if using third party FastDL.");
+		ReplyToCommand(client, "GetMap: Compressed and Decompressed file in same location, deleting compressed file. Ignore if using third party FastDL.");
 		if(FileExists(gS_FastDLPath))
 		{
 			DeleteFile(gS_FastDLPath);
-			PrintToChat(client, "GetMap: Deleted %s", gS_FastDLPath);
+			ReplyToCommand(client, "GetMap: Deleted %s", gS_FastDLPath);
 		}
 	}
 
-	PrintToChat(client, "Map successfully added to the server! Use !map %s to change to it.", mapName);
+	ReplyToCommand(client, "Map successfully added to the server! Use !map %s to change to it.", mapName);
 }
